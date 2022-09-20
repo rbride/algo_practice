@@ -1,0 +1,1 @@
+This is a simple project intended to serve as practice and showcase the implementation of many basic algorithms. 
