@@ -12,6 +12,7 @@
 #include <random>
 #include <iostream>
 #include <type_traits>
+#include <limits>
 
 using std::size_t; 
 using std::vector;
@@ -33,7 +34,7 @@ void fill_vector( std::vector<T>& a, int lower = 1, int upper = 30000 )
   
   if( is_same<int, decltype(temp)>::value ){
       std::uniform_int_distribution<int> dist(lower, upper);
-      a.resize(10000);
+      a.resize(1000);
       std::generate(a.begin(), a.end(), std::bind(dist, mte) );
   }
   else if( is_same<double, decltype(temp)>::value ){
@@ -87,8 +88,29 @@ void Merge_Function(vector<T>& Arr, int p, int midpoint, int r){
   vector<T>left_arr;
   vector<T>right_arr;
 
-  //for (size_t i; i < lsa1)
-  
+  //Test array
+  vector<T>test;
+  /* Copy the first half into the left vector  */
+  std::copy(Arr.begin(), Arr.begin()+midpoint, std::back_inserter(left_arr));
+  /* Copy the second half into the right vector */
+  std::copy(Arr.begin()+midpoint+1, Arr.end(), std::back_inserter(right_arr));
+  /* Add the extremes */
+  left_arr.push_back(std::numeric_limits<T>::max());
+  right_arr.push_back(std::numeric_limits<T>::max());
+  size_t i = 0; 
+  size_t j = 0;
+
+  for (int k = p; k < r; k++){
+    if (left_arr[i] <= right_arr[j]){
+        Arr[k] = left_arr[i];
+        i++;
+    }
+    else{
+        Arr[k] = (right_arr[j]);
+        j++;
+    }
+  }   
+  std::copy(std::begin(Arr), std::end(Arr), std::ostream_iterator<T>(std::cout, "\n"));
 
   return;
 }
@@ -106,9 +128,12 @@ int main(){
   std::cout << "\nSize of Int Vector: " << test_int.size() << '\n';
   std::cout << "Size of Double Vector: " << test_double.size() << '\n';
 
-  Merge_Sort(test_int, 0, static_cast<int>(test_int.size())-1);
+  //Merge_Sort(test_int, 0, static_cast<int>(test_int.size()));
+  //Merge_Sort(test_double, 0, static_cast<int>(test_double.size())-1);
 
-  Merge_Sort(test_double, 0, static_cast<int>(test_double.size())-1);
+  vector<int> merge_fun_test_vec = {1,7,9,12,4,8,10,11};
+  // //Merge_Function(merge_fun_test_vec, 0, 3, 7);
+  Merge_Sort(merge_fun_test_vec, 0, 7);
 
   /*vector<int> test1 = {71,50,57,61,21,12,24,51,20,7,
                        2,91,11,36,71,21,78,56,8,14,

@@ -22,7 +22,7 @@ SOURCES     := $(filter-out $(TESTSOURCES), $(SOURCES))
 OBJECTS     = $(SOURCES:%.cpp=%.o)
 
 #Default Flags
-CXXFLAGS = -std=c++1z -Wconversion -Wall -Wextra -pedantic -Werror -Wno-unused-parameter -Wno-used-constraint
+CXXFLAGS = -std=c++1z -Wconversion -Wall -Wextra -pedantic -Werror -Wno-unused-parameter 
 
 # make release - will compile "all" with $(CXXFLAGS) and the -O3 flag
 #                also defines NDEBUG so that asserts will not check
