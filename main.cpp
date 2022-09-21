@@ -37,18 +37,15 @@ void fill_vector( std::vector<T>& a, int lower = 1, int upper = 30000 )
       std::generate(a.begin(), a.end(), std::bind(dist, mte) );
   }
   else if( is_same<double, decltype(temp)>::value ){
-      std::cout << "\nFloats are broken\nSad!\n"
-      /*
-      std::uniform_real_distribution<double> dist(1.0, 1000.0);
+      std::uniform_real_distribution<double> dist(0.0, 1000.0);
       a.resize(10000);
+      //auto gen = [&dist, &mte]() { return dist(mte); }; //does the same thing as bind
       std::generate(a.begin(), a.end(), std::bind(dist, mte) );
-      */
   }
   else{
     std::cout << "Can only generate random vector of type int and Double\n";
   }
-  
-  return;
+
 }
 
 /**************************************************
@@ -86,8 +83,6 @@ void Merge_Function(vector<T>& Arr, int p, int midpoint, int r){
   vector<T>left_arr;
   vector<T>right_arr;
 
-
-
   return;
 }
 /**************************************************
@@ -99,24 +94,30 @@ int main(){
   fill_vector(test);
   // std::copy(std::begin(test), std::end(test), 
   //           std::ostream_iterator<int>(std::cout, "\t"));
-  
+  vector<double> dtest;
+  fill_vector(dtest);
+  std::cout << "\nSize of Int Vector: " << test.size() << '\n';
+  std::cout << "Size of Double Vector: " << dtest.size() << '\n';
+
+
+
   vector<int> test1 = {71,50,57,61,21,12,24,51,20,7,
                        2,91,11,36,71,21,78,56,8,14,
                        90,25,28,29,32 };
 
 
-  Merge_Sort(test1, 0, static_cast<int>(test1.size())-1);
-  std::copy(std::begin(test1), std::end(test1), 
-            std::ostream_iterator<int>(std::cout, "\n"));
+  // Merge_Sort(test1, 0, static_cast<int>(test1.size())-1);
+  // std::copy(std::begin(test1), std::end(test1), 
+  //           std::ostream_iterator<int>(std::cout, "\n"));
   
-  std::cout << '\n';
+  // std::cout << '\n';
 
-  vector<double> test2 = {31.120, 8.145, .0005, 17.1};
-  //Merge_Sort(test2, 0, test2.size()-1);
+  // vector<double> test2 = {31.120, 8.145, .0005, 17.1};
+  // //Merge_Sort(test2, 0, test2.size()-1);
 
-  //std::cout << '\n';
-  vector<double> test3 = {1.1556};
-  //Merge_Sort(test3, 0, test3.size()-1);
+  // //std::cout << '\n';
+  // vector<double> test3 = {1.1556};
+  // //Merge_Sort(test3, 0, test3.size()-1);
   
   
 
@@ -125,7 +126,6 @@ int main(){
 
 
 // Print vector
-//  std::copy(std::begin(Arr),
-//           std::end(Arr),
+//  std::copy(std::begin(Arr), std::end(Arr),
 //           std::ostream_iterator<Int_or_Float>(std::cout, "\n"));
 // }
