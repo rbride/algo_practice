@@ -69,7 +69,6 @@ void Merge_Sort(vector<T>& Arr, int p,  int r) {
   Merge_Sort(Arr, midpoint+1, r);
 
   /* Merge */
-  std::cout << "fuck black man chris";
   Merge_Function(Arr, p, midpoint, r);
   
 }
@@ -119,7 +118,7 @@ int main(){
   //std::copy(std::begin(test1), std::end(test1), 
   //          std::ostream_iterator<int>(std::cout, "\n"));
   
-  //std::cout << '\n';
+ // std::cout << '\n';
 
   //vector<double> test2 = {31.120, 8.145, .0005, 17.1};
   //Merge_Sort(test2, 0, test2.size()-1);
