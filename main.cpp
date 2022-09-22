@@ -13,6 +13,8 @@
 #include <iostream>
 #include <type_traits>
 #include <limits>
+#include <string>
+#include <fstream>
 
 using std::size_t; 
 using std::vector;
@@ -34,7 +36,7 @@ void fill_vector( std::vector<T>& a, int lower = 1, int upper = 30000 )
   
   if( is_same<int, decltype(temp)>::value ){
       std::uniform_int_distribution<int> dist(lower, upper);
-      a.resize(1000);
+      a.resize(100);
       std::generate(a.begin(), a.end(), std::bind(dist, mte) );
   }
   else if( is_same<double, decltype(temp)>::value ){
@@ -55,38 +57,47 @@ void fill_vector( std::vector<T>& a, int lower = 1, int upper = 30000 )
 **************************************************/
 template<class T>
 void Merge_Sort(vector<T>& Arr, int p,  int r) {
-  if (p<r){
-    int midpoint = ((r-p)/2);
-    std::cout << '\t' << "midpoint: " << midpoint << ' ';
-    Merge_Sort(Arr, p, midpoint);
-    Merge_Sort(Arr,midpoint+1,r);
-    /* Merge */
-    Merge_Function(Arr, p, midpoint, r);
+  if (p < r) {
+    int midp = (p+r)/2;
+    //std::cout << '\t' << "midpoint: " << midp << ' ';
+    /* Divide the array Into 2 Recursively until you get elementary Array */
+    Merge_Sort(Arr, p, midp);
+    Merge_Sort(Arr, midp+1, r);
+    /* Merge the Arrays, Starting with elementaries until the very end */
+    Merge_Function(Arr, p, midp, r);
   }
 
-  //Divide in 2 and recursively call
-  // Merge_Sort(Arr, p, midpoint);
-  // Merge_Sort(Arr, midpoint+1, r);
-
-
 }
+//My p and q stuff is fucked
+
 
 template <class T>
 void Merge_Function(vector<T>& Arr, int p, int q, int r){
   /* Get the Length of Each Subvector*/
-  int lsa1 = q - p + 1;
+  //int lsa1 = (q+1) - p;
+  //int lsa2 = r - q;
+  q++;
+  int lsa1 = q - p;
   int lsa2 = r - q;
+
+  std::cout << "LSA1: " << lsa1 << "\tLSA2: " << lsa2; 
+  std::cout << "\tP: " << p << "\tQ: " << q << "\tR: " << r;
+  
   /* Create two seperate subvectors with 1 extra space each*/
   vector<T>left_arr;
   vector<T>right_arr;
   /* Copy the first half into the left vector  */
-  // std::copy(Arr.begin()+p, Arr.begin()+midpoint, std::back_inserter(left_arr));
-  // /* Copy the second half into the right vector */
-  // std::copy(Arr.begin()+midpoint+1, Arr.begin()+r, std::back_inserter(right_arr));
-  /* Add the extremes */
-  std::copy(Arr.begin()+p, Arr.begin()+lsa1, std::back_inserter(left_arr));
+  //std::copy(Arr.begin()+p, Arr.begin()+q+1, std::back_inserter(left_arr));
   /* Copy the second half into the right vector */
-  std::copy(Arr.begin()+lsa2, Arr.begin()+r+1, std::back_inserter(right_arr));
+  //std::copy(Arr.begin()+q+1+p, Arr.begin()+q+1+p+r, std::back_inserter(right_arr));
+  /* Add the extremes */
+  std::copy(Arr.begin()+p, Arr.begin()+q, std::back_inserter(left_arr));
+  // /* Copy the second half into the right vector */
+  std::copy(Arr.begin()+q, Arr.begin()+r+1, std::back_inserter(right_arr));
+  //std::copy(Arr.begin()+p, Arr.begin()+lsa1, std::back_inserter(left_arr));
+  //std::copy(Arr.begin()+lsa2, Arr.begin()+r+1, std::back_inserter(right_arr));
+
+
 
   left_arr.push_back(std::numeric_limits<T>::max());
   right_arr.push_back(std::numeric_limits<T>::max());
@@ -98,8 +109,7 @@ void Merge_Function(vector<T>& Arr, int p, int q, int r){
 
   size_t i = 0; 
   size_t j = 0;
-
-  for (int k = p; k <= r; ++k){
+  for (int k = p; k <= r; k++){
     if (left_arr[i] <= right_arr[j]){
         Arr[k] = left_arr[i];
         i++;
@@ -113,7 +123,7 @@ void Merge_Function(vector<T>& Arr, int p, int q, int r){
   }   
   std::cout<< '\n' << "ordered array" <<  '\n';
   std::copy(std::begin(Arr), std::end(Arr), std::ostream_iterator<T>(std::cout, "\t"));
-
+  std::cout << '\n' << '\n';
   return;
 }
 /**************************************************
@@ -121,23 +131,47 @@ void Merge_Function(vector<T>& Arr, int p, int q, int r){
 //std::copy(std::begin(test1), std::end(test1), 
 //          std::ostream_iterator<int>(std::cout, "\n"));
 int main(){
+  /* Basic test Case */
+  vector<int> merge1 = {1,9,12,7,8,10,4,11};
+  Merge_Sort(merge1,0,7);
+  /* Large 10000 Entry Test */  
   vector<int> test_int;
   fill_vector(test_int);
   vector<double> test_double;
   fill_vector(test_double);
+
+  //vector<int> test_int_copy = test_int;
   //Merge_Sort(test_int, 0, static_cast<int>(test_int.size()));
-  //Merge_Sort(test_double, 0, static_cast<int>(test_double.size())-1);
+  vector<int> test_100;
+  //test_100 = {
+  //            29,38,3,93,66,17,63,39,86,57,68,2,76,63,34,1,86,1,31,29,
+  //            97,39,91,82,56,61,16,81,45,87,44,15,14,16,58,79,45,69,7,100
+              //16,58,33,81,70,43,39,52,86,6,40,86,4,32,5,74,83,82,37,37,
+              //7,84,84,29,23,27,71,44,71,47,41,47,50,40,14,75,12,81,42,91,
+              //12,59,69,88,79,76,9,28,32,59,23,46,66,51,47,66,92,10,5,5
+            //};
+  //Merge_Sort(test_100, 0, 99);
 
-  vector<int> merge_fun_test_vec = {1,7,9,12,4,8,10,11};
-  Merge_Function(merge_fun_test_vec, 0, 3, 7);
-  //Merge_Sort(merge_fun_test_vec, 0, 7);
-  /*vector<int> test1 = {71,50,57,61,21,12,24,51,20,7,
-                       2,91,11,36,71,21,78,56,8,14,
-                       90,25,28,29,32 }; */
 
-  //vector<double> test2 = {31.120, 8.145, .0005, 17.1};
-  //Merge_Sort(test2, 0, test2.size()-1);
-  //vector<double> test3 = {1.1556};
-  //Merge_Sort(test3, 0, test3.size()-1);
+
+
+  //std::sort(test_int_copy.begin(), test_int_copy.end(), std::less_equal<int>());
+  
+  //if(test_int == test_int_copy){
+    //std::cout << "Merge Sort is Equal to the version created through Standard Sort";
+  //}
+  
+  std::ofstream output_file1("./merge_sort_outp.txt");
+  for (const auto &e : test_int) output_file1 << e << "\n";
+
+  output_file1.close();
+
+  //std::ofstream output_file2("./standard_sort_outp.txt");
+  //for (const auto &e : test_int_copy) output_file2 << e << "\n";
+  //output_file2.close();
+
+
+  //std::copy(std::begin(merge_fun_test_vec), std::end(merge_fun_test_vec), 
+  //      std::ostream_iterator<int>(std::cout, "\n"));
   return 0;
 }
