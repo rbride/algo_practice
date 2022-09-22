@@ -19,8 +19,7 @@
 using std::size_t; 
 using std::vector;
 using std::is_same;
-//Forward Declare Merge Function to keep the same order I have in the my Notes
-template<class T>
+template<class T> //Forward Declare Merge Function to keep the same order I have in the my Notes
 void Merge_Function(vector<T>&, int, int, int);
 
 /**************************************************
@@ -31,9 +30,7 @@ void fill_vector( std::vector<T>& a, int lower = 1, int upper = 30000 )
 {
   T temp;
   static std::random_device rnd;
-  static std::mt19937 mte(rnd()); //
-  //std::cout << std::boolalpha << '\n' << is_same<int, decltype(t)>::value << '\n';
-  
+  static std::mt19937 mte(rnd()); //  
   if( is_same<int, decltype(temp)>::value ){
       std::uniform_int_distribution<int> dist(lower, upper);
       a.resize(10000);
@@ -42,7 +39,6 @@ void fill_vector( std::vector<T>& a, int lower = 1, int upper = 30000 )
   else if( is_same<double, decltype(temp)>::value ){
       std::uniform_real_distribution<double> dist(0.0, 1000.0);
       a.resize(10000);
-      //auto gen = [&dist, &mte]() { return dist(mte); }; //does the same thing as bind
       std::generate(a.begin(), a.end(), std::bind(dist, mte) );
   }
   else{
