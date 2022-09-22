@@ -36,7 +36,7 @@ void fill_vector( std::vector<T>& a, int lower = 1, int upper = 30000 )
   
   if( is_same<int, decltype(temp)>::value ){
       std::uniform_int_distribution<int> dist(lower, upper);
-      a.resize(100);
+      a.resize(10000);
       std::generate(a.begin(), a.end(), std::bind(dist, mte) );
   }
   else if( is_same<double, decltype(temp)>::value ){
@@ -80,8 +80,8 @@ void Merge_Function(vector<T>& Arr, int p, int q, int r){
   int lsa1 = q - p;
   int lsa2 = r - q;
 
-  std::cout << "LSA1: " << lsa1 << "\tLSA2: " << lsa2; 
-  std::cout << "\tP: " << p << "\tQ: " << q << "\tR: " << r;
+  //std::cout << "LSA1: " << lsa1 << "\tLSA2: " << lsa2; 
+  //std::cout << "\tP: " << p << "\tQ: " << q << "\tR: " << r;
   
   /* Create two seperate subvectors with 1 extra space each*/
   vector<T>left_arr;
@@ -101,11 +101,11 @@ void Merge_Function(vector<T>& Arr, int p, int q, int r){
 
   left_arr.push_back(std::numeric_limits<T>::max());
   right_arr.push_back(std::numeric_limits<T>::max());
-  std::cout << '\n' << "size left: " << left_arr.size() << "\tright Array size: " << right_arr.size() << '\n';
-  std::cout << "left array: " << '\n';
-  std::copy(std::begin(left_arr), std::end(left_arr), std::ostream_iterator<T>(std::cout, "\t"));
-  std::cout << '\n' << "right: " << '\n';
-  std::copy(std::begin(right_arr), std::end(right_arr), std::ostream_iterator<T>(std::cout, "\t"));
+  //std::cout << '\n' << "size left: " << left_arr.size() << "\tright Array size: " << right_arr.size() << '\n';
+  //std::cout << "left array: " << '\n';
+  //std::copy(std::begin(left_arr), std::end(left_arr), std::ostream_iterator<T>(std::cout, "\t"));
+  //std::cout << '\n' << "right: " << '\n';
+  //std::copy(std::begin(right_arr), std::end(right_arr), std::ostream_iterator<T>(std::cout, "\t"));
 
   size_t i = 0; 
   size_t j = 0;
@@ -121,9 +121,9 @@ void Merge_Function(vector<T>& Arr, int p, int q, int r){
         //std::cout << "j: " << j;
     }
   }   
-  std::cout<< '\n' << "ordered array" <<  '\n';
-  std::copy(std::begin(Arr), std::end(Arr), std::ostream_iterator<T>(std::cout, "\t"));
-  std::cout << '\n' << '\n';
+  //std::cout<< '\n' << "ordered array" <<  '\n';
+  //std::copy(std::begin(Arr), std::end(Arr), std::ostream_iterator<T>(std::cout, "\t"));
+  //std::cout << '\n' << '\n';
   return;
 }
 /**************************************************
@@ -133,42 +133,42 @@ void Merge_Function(vector<T>& Arr, int p, int q, int r){
 int main(){
   /* Basic test Case */
   vector<int> merge1 = {1,9,12,7,8,10,4,11};
-  Merge_Sort(merge1,0,7);
+  //Merge_Sort(merge1,1,6);
   /* Large 10000 Entry Test */  
   vector<int> test_int;
   fill_vector(test_int);
   vector<double> test_double;
   fill_vector(test_double);
 
-  //vector<int> test_int_copy = test_int;
-  //Merge_Sort(test_int, 0, static_cast<int>(test_int.size()));
-  vector<int> test_100;
-  //test_100 = {
-  //            29,38,3,93,66,17,63,39,86,57,68,2,76,63,34,1,86,1,31,29,
-  //            97,39,91,82,56,61,16,81,45,87,44,15,14,16,58,79,45,69,7,100
-              //16,58,33,81,70,43,39,52,86,6,40,86,4,32,5,74,83,82,37,37,
-              //7,84,84,29,23,27,71,44,71,47,41,47,50,40,14,75,12,81,42,91,
-              //12,59,69,88,79,76,9,28,32,59,23,46,66,51,47,66,92,10,5,5
-            //};
-  //Merge_Sort(test_100, 0, 99);
+  vector<int> test_int_copy = test_int;
+  Merge_Sort(test_int, 0, static_cast<int>(test_int.size()));
+  //vector<int> test_100;
+  // test_100 = {
+  //             29,38,3,93,66,17,63,39,86,57,68,2,76,63,34,1,86,1,31,29,
+  //             97,39,91,82,56,61,16,81,45,87,44,15,14,16,58,79,45,69,7,100
+  //             //16,58,33,81,70,43,39,52,86,6,40,86,4,32,5,74,83,82,37,37,
+  //             //7,84,84,29,23,27,71,44,71,47,41,47,50,40,14,75,12,81,42,91,
+  //             //12,59,69,88,79,76,9,28,32,59,23,46,66,51,47,66,92,10,5,5
+  //           };
+  // Merge_Sort(test_100, 0, static_cast<int>(test_100.size())-1);
 
 
 
 
-  //std::sort(test_int_copy.begin(), test_int_copy.end(), std::less_equal<int>());
+  std::sort(test_int_copy.begin(), test_int_copy.end(), std::less_equal<int>());
   
-  //if(test_int == test_int_copy){
-    //std::cout << "Merge Sort is Equal to the version created through Standard Sort";
-  //}
+  if(test_int == test_int_copy){
+    std::cout << "Merge Sort is Equal to the version created through Standard Sort";
+  }
   
   std::ofstream output_file1("./merge_sort_outp.txt");
   for (const auto &e : test_int) output_file1 << e << "\n";
 
   output_file1.close();
 
-  //std::ofstream output_file2("./standard_sort_outp.txt");
-  //for (const auto &e : test_int_copy) output_file2 << e << "\n";
-  //output_file2.close();
+  std::ofstream output_file2("./standard_sort_outp.txt");
+  for (const auto &e : test_int_copy) output_file2 << e << "\n";
+  output_file2.close();
 
 
   //std::copy(std::begin(merge_fun_test_vec), std::end(merge_fun_test_vec), 
