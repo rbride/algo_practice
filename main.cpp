@@ -53,112 +53,91 @@ void fill_vector( std::vector<T>& a, int lower = 1, int upper = 30000 )
 * P and R are assumed to be the Beginning and end of 
 * the Specified vector
 **************************************************/
-// TODO: Design it so that it takes optional inputs for P and R, and if none are given
-//       Specify P and R as Arr.begin() and Arr.End()
 template<class T>
 void Merge_Sort(vector<T>& Arr, int p,  int r) {
-  //Return the Sorted vector if the vector is of size 1
-  int midpoint = ((r-p)/2);
-  if(midpoint != 0){
-     Merge_Sort(Arr, p, midpoint);
-     Merge_Sort(Arr, midpoint+1, r);
+  if (p<r){
+    int midpoint = ((r-p)/2);
+    std::cout << '\t' << "midpoint: " << midpoint << ' ';
+    Merge_Sort(Arr, p, midpoint);
+    Merge_Sort(Arr,midpoint+1,r);
+    /* Merge */
+    Merge_Function(Arr, p, midpoint, r);
   }
-  std::cout << '\t' << "midpoint: " << midpoint << ' ';
+
   //Divide in 2 and recursively call
   // Merge_Sort(Arr, p, midpoint);
   // Merge_Sort(Arr, midpoint+1, r);
 
-  /* Merge */
-  Merge_Function(Arr, p, midpoint, r);
 
 }
 
-
 template <class T>
-void Merge_Function(vector<T>& Arr, int p, int midpoint, int r){
+void Merge_Function(vector<T>& Arr, int p, int q, int r){
   /* Get the Length of Each Subvector*/
-  std::cout << "yeet"; 
-  // int lsa1 = midpoint + p + 1;
-  // int lsa2 = r - midpoint;
-  
-  // std::cout << "\tlsa1: " << lsa1;
-  // std::cout << "\tlsa2: " << lsa2;
-
+  int lsa1 = q - p + 1;
+  int lsa2 = r - q;
   /* Create two seperate subvectors with 1 extra space each*/
   vector<T>left_arr;
   vector<T>right_arr;
-
-  //Test array
-  vector<T>test;
   /* Copy the first half into the left vector  */
-  std::copy(Arr.begin(), Arr.begin()+midpoint, std::back_inserter(left_arr));
-  /* Copy the second half into the right vector */
-  std::copy(Arr.begin()+midpoint+1, Arr.end(), std::back_inserter(right_arr));
+  // std::copy(Arr.begin()+p, Arr.begin()+midpoint, std::back_inserter(left_arr));
+  // /* Copy the second half into the right vector */
+  // std::copy(Arr.begin()+midpoint+1, Arr.begin()+r, std::back_inserter(right_arr));
   /* Add the extremes */
+  std::copy(Arr.begin()+p, Arr.begin()+lsa1, std::back_inserter(left_arr));
+  /* Copy the second half into the right vector */
+  std::copy(Arr.begin()+lsa2, Arr.begin()+r+1, std::back_inserter(right_arr));
+
   left_arr.push_back(std::numeric_limits<T>::max());
   right_arr.push_back(std::numeric_limits<T>::max());
+  std::cout << '\n' << "size left: " << left_arr.size() << "\tright Array size: " << right_arr.size() << '\n';
+  std::cout << "left array: " << '\n';
+  std::copy(std::begin(left_arr), std::end(left_arr), std::ostream_iterator<T>(std::cout, "\t"));
+  std::cout << '\n' << "right: " << '\n';
+  std::copy(std::begin(right_arr), std::end(right_arr), std::ostream_iterator<T>(std::cout, "\t"));
+
   size_t i = 0; 
   size_t j = 0;
 
-  for (int k = p; k < r; k++){
+  for (int k = p; k <= r; ++k){
     if (left_arr[i] <= right_arr[j]){
         Arr[k] = left_arr[i];
         i++;
+        //std::cout << left_arr[3];
     }
     else{
-        Arr[k] = (right_arr[j]);
+        Arr[k] = right_arr[j];
         j++;
+        //std::cout << "j: " << j;
     }
   }   
-  std::copy(std::begin(Arr), std::end(Arr), std::ostream_iterator<T>(std::cout, "\n"));
+  std::cout<< '\n' << "ordered array" <<  '\n';
+  std::copy(std::begin(Arr), std::end(Arr), std::ostream_iterator<T>(std::cout, "\t"));
 
   return;
 }
 /**************************************************
 **************************************************/
-
+//std::copy(std::begin(test1), std::end(test1), 
+//          std::ostream_iterator<int>(std::cout, "\n"));
 int main(){
-  /* consider using generate and a vector in the second interation of this file*/
   vector<int> test_int;
   fill_vector(test_int);
-  // std::copy(std::begin(test), std::end(test), 
-  //           std::ostream_iterator<int>(std::cout, "\t"));
   vector<double> test_double;
   fill_vector(test_double);
-  std::cout << "\nSize of Int Vector: " << test_int.size() << '\n';
-  std::cout << "Size of Double Vector: " << test_double.size() << '\n';
-
   //Merge_Sort(test_int, 0, static_cast<int>(test_int.size()));
   //Merge_Sort(test_double, 0, static_cast<int>(test_double.size())-1);
 
   vector<int> merge_fun_test_vec = {1,7,9,12,4,8,10,11};
-  // //Merge_Function(merge_fun_test_vec, 0, 3, 7);
-  Merge_Sort(merge_fun_test_vec, 0, 7);
-
+  Merge_Function(merge_fun_test_vec, 0, 3, 7);
+  //Merge_Sort(merge_fun_test_vec, 0, 7);
   /*vector<int> test1 = {71,50,57,61,21,12,24,51,20,7,
                        2,91,11,36,71,21,78,56,8,14,
                        90,25,28,29,32 }; */
 
-
-  //std::copy(std::begin(test1), std::end(test1), 
-  //          std::ostream_iterator<int>(std::cout, "\n"));
-  
- // std::cout << '\n';
-
   //vector<double> test2 = {31.120, 8.145, .0005, 17.1};
   //Merge_Sort(test2, 0, test2.size()-1);
-
-  //std::cout << '\n';
   //vector<double> test3 = {1.1556};
   //Merge_Sort(test3, 0, test3.size()-1);
-  
-  
-
   return 0;
 }
-
-
-// Print vector
-//  std::copy(std::begin(Arr), std::end(Arr),
-//           std::ostream_iterator<Int_or_Float>(std::cout, "\n"));
-// }
