@@ -3,7 +3,6 @@
  * types for the various algorithms being implemented
  * Then feed in and call upon the algorithms 
 **************************************************/
-#include "algorithms.h"
 #include <cstdlib>
 #include <ctime>
 #include <vector> 
