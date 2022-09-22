@@ -48,7 +48,6 @@ void fill_vector( std::vector<T>& a, int lower = 1, int upper = 30000 )
   }
 
 }
-
 /**************************************************
 * Merge Sort and Merge functions
 * P and R are assumed to be the Beginning and end of 
@@ -59,30 +58,31 @@ void fill_vector( std::vector<T>& a, int lower = 1, int upper = 30000 )
 template<class T>
 void Merge_Sort(vector<T>& Arr, int p,  int r) {
   //Return the Sorted vector if the vector is of size 1
-  if(Arr.size() == 1){
-    return;
+  int midpoint = ((r-p)/2);
+  if(midpoint != 0){
+     Merge_Sort(Arr, p, midpoint);
+     Merge_Sort(Arr, midpoint+1, r);
   }
-  
-  int midpoint = (static_cast<int>(Arr.size())-1)/2;
-  std::cout << midpoint << ' ';
+  std::cout << '\t' << "midpoint: " << midpoint << ' ';
   //Divide in 2 and recursively call
-  Merge_Sort(Arr, p, midpoint);
-  Merge_Sort(Arr, midpoint+1, r);
+  // Merge_Sort(Arr, p, midpoint);
+  // Merge_Sort(Arr, midpoint+1, r);
 
   /* Merge */
   Merge_Function(Arr, p, midpoint, r);
-  
+
 }
+
 
 template <class T>
 void Merge_Function(vector<T>& Arr, int p, int midpoint, int r){
   /* Get the Length of Each Subvector*/
   std::cout << "yeet"; 
-  int lsa1 = midpoint - p + 1;
-  int lsa2 = r - midpoint;
+  // int lsa1 = midpoint + p + 1;
+  // int lsa2 = r - midpoint;
   
-  std::cout << "\tlsa1: " << lsa1;
-  std::cout << "\tlsa2: " << lsa2;
+  // std::cout << "\tlsa1: " << lsa1;
+  // std::cout << "\tlsa2: " << lsa2;
 
   /* Create two seperate subvectors with 1 extra space each*/
   vector<T>left_arr;
