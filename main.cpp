@@ -3,21 +3,17 @@
  * types for the various algorithms being implemented
  * Then feed in and call upon the algorithms 
 **************************************************/
-#include <cstdlib>
-#include <ctime>
+#include <cstddef>
 #include <vector> 
-#include <algorithm>
-#include <iterator>
-#include <random>
-#include <iostream>
-#include <type_traits>
-#include <limits>
-#include <string>
+#include <algorithm> 
+#include <random> 
+#include <iostream> 
+#include <type_traits> 
 #include <fstream>
+#include "sorting_algorithms.h"
 
 using std::size_t; 
 using std::vector;
-using std::is_same;
 template<class T> //Forward Declare Merge Function to keep the same order I have in the my Notes
 void Merge_Function(vector<T>&, int, int, int);
 
@@ -27,6 +23,7 @@ void Merge_Function(vector<T>&, int, int, int);
 template<class T>
 void fill_vector( std::vector<T>& a, int lower = 1, int upper = 30000 )
 {
+  using std::is_same;
   T temp;
   static std::random_device rnd;
   static std::mt19937 mte(rnd()); //  
@@ -45,67 +42,9 @@ void fill_vector( std::vector<T>& a, int lower = 1, int upper = 30000 )
   }
 
 }
-/**************************************************
-* Merge Sort and Merge functions
-* P and R are assumed to be the Beginning and end of 
-* the Specified vector
-**************************************************/
-template<class T>
-void Merge_Sort(vector<T>& Arr, int p,  int r) {
-  if (p < r) {
-    int midp = (p+r)/2;
-    /* Divide the array Into 2 Recursively until you get elementary Array */
-    Merge_Sort(Arr, p, midp);
-    Merge_Sort(Arr, midp+1, r);
-    /* Merge the Arrays, Starting with elementaries until the very end */
-    Merge_Function(Arr, p, midp, r);
-  }
 
-}
-
-template <class T>
-void Merge_Function(vector<T>& Arr, int p, int q, int r){
-  /* Add one to q */
-  q++;
-  /* Create two seperate subvectors with 1 extra space each*/
-  vector<T>left_arr;
-  vector<T>right_arr;
-  /* Copy the first half into the left vector  */
-  std::copy(Arr.begin()+p, Arr.begin()+q, std::back_inserter(left_arr));
-  // /* Copy the second half into the right vector */
-  std::copy(Arr.begin()+q, Arr.begin()+r+1, std::back_inserter(right_arr));
-  /* Add the extremes */
-  left_arr.push_back(std::numeric_limits<T>::max());
-  right_arr.push_back(std::numeric_limits<T>::max());
-  
-  size_t i = 0; 
-  size_t j = 0;
-  for (int k = p; k <= r; k++){
-    if (left_arr[i] <= right_arr[j]){
-        Arr[k] = left_arr[i];
-        i++;
-    }
-    else{
-        Arr[k] = right_arr[j];
-        j++;
-    }
-  }   
-  /* Print statements used for testing */
-  //std::cout << "\tP: " << p << "\tQ: " << q << "\tR: " << r;
-  //std::cout << '\n' << "size left: " << left_arr.size() << "\tright Array size: " << right_arr.size() << '\n';
-  //std::cout << "left array: " << '\n';
-  //std::copy(std::begin(left_arr), std::end(left_arr), std::ostream_iterator<T>(std::cout, "\t"));
-  //std::cout << '\n' << "right: " << '\n';
-  //std::copy(std::begin(right_arr), std::end(right_arr), std::ostream_iterator<T>(std::cout, "\t"));
-  //std::cout<< '\n' << "ordered array" <<  '\n';
-  //std::copy(std::begin(Arr), std::end(Arr), std::ostream_iterator<T>(std::cout, "\t"));
-  //std::cout << '\n' << '\n';
-
-  return;
-}
-/**************************************************
-**************************************************/
 int main(){
+   //Large random 10000 entry test Int and Double vector generation 
   /* Large random 10000 entry test Int and Double vector generation */  
   vector<int> test_int;
   fill_vector(test_int);
@@ -129,20 +68,29 @@ int main(){
   return 0;
 }
 
+/*
+Merge sort functions called and used in the first iteration of main
+ //Large random 10000 entry test Int and Double vector generation 
+  vector<int> test_int;
+  fill_vector(test_int);
+  vector<double> test_double;
+  fill_vector(test_double);
+  //Make an exact copy of the test vectors to run using a standard sort to test for accuracy
+  vector<int> test_int_copy = test_int;
+  Merge_Sort(test_int, 0, static_cast<int>(test_int.size()));
+  //Run Standard Sort on the same array to have a benchmark to test against
+  std::sort(test_int_copy.begin(), test_int_copy.end(), std::less_equal<int>());
+  
+  //Output The Array Sorted via Merge sort to a file 
+  std::ofstream output_file1("./merge_sort_outp.txt");
+  for (const auto &e : test_int) output_file1 << e << "\n";
+  output_file1.close();
+  //Output The Array Sorted via Standard Sort to a file
+  std::ofstream output_file2("./standard_sort_outp.txt");
+  for (const auto &e : test_int_copy) output_file2 << e << "\n";
+  output_file2.close();
 
-/* unused test arrays */
-  /* Basic test Case */
-  //vector<int> merge1 = {1,9,12,7,8,10,4,11}; 
-  /* 100 entry int test case */
-  //vector<int> test_100;
-  //test_100 =  {
-  //            29,38,3,93,66,17,63,39,86,57,68,2,76,63,34,1,86,1,31,29,
-  //            97,39,91,82,56,61,16,81,45,87,44,15,14,16,58,79,45,69,7,100
-  //            16,58,33,81,70,43,39,52,86,6,40,86,4,32,5,74,83,82,37,37,
-  //            7,84,84,29,23,27,71,44,71,47,41,47,50,40,14,75,12,81,42,91,
-  //            12,59,69,88,79,76,9,28,32,59,23,46,66,51,47,66,92,10,5,5
-  //            };
-
+*/
 /* Example of print function I used throughout the file */
 //std::copy(std::begin(merge_fun_test_vec), std::end(merge_fun_test_vec), 
 //      std::ostream_iterator<int>(std::cout, "\n"));
